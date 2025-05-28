@@ -4,6 +4,7 @@ class MainScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('logo', 'assets/logo_s.png');
     // Load assets (placeholder for now)
   }
 
@@ -12,16 +13,16 @@ class MainScene extends Phaser.Scene {
 
     // --- Start Screen Title ---
     this.startState = true;
-    this.startTitle = this.add.text(
+    // Remove text title, use logo image instead
+    this.startLogo = this.add.image(
       this.game.config.width / 2,
       this.game.config.height / 2 - 60,
-      "Blockshift",
-      { font: '56px Arial', fill: '#222', fontStyle: 'bold' }
-    ).setOrigin(0.5).setAlpha(0);
+      'logo'
+    ).setOrigin(0.5).setAlpha(0).setScale(0.7);
     this.tweens.add({
-      targets: this.startTitle,
+      targets: this.startLogo,
       alpha: 1,
-      scale: { from: 0.7, to: 1 },
+      scale: 1,
       duration: 800,
       ease: 'Power2',
     });
@@ -102,15 +103,14 @@ class MainScene extends Phaser.Scene {
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.spaceKey.on('down', () => {
       if (this.startState) {
-        // Hide start title and begin game
         this.startState = false;
         this.tweens.add({
-          targets: this.startTitle,
+          targets: this.startLogo,
           alpha: 0,
           scale: 0.7,
           duration: 400,
           ease: 'Power2',
-          onComplete: () => this.startTitle.setVisible(false)
+          onComplete: () => this.startLogo.setVisible(false)
         });
         this.playerPaused = false;
         return;
