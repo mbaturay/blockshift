@@ -498,7 +498,7 @@ class MainScene extends Phaser.Scene {
     // Delay Game Over text appearance
     if (this.gameOverText) this.gameOverText.destroy();
     // Create a box for the game over message
-    const boxWidth = 420;
+    const boxWidth = 320;
     const boxHeight = 90;
     const boxX = this.game.config.width / 2 - boxWidth / 2;
     const boxY = this.game.config.height / 2 - boxHeight / 2;
@@ -506,15 +506,15 @@ class MainScene extends Phaser.Scene {
     this.gameOverBox = this.add.graphics();
     this.gameOverBox.fillStyle(0xffffff, 0.95);
     this.gameOverBox.fillRoundedRect(boxX, boxY, boxWidth, boxHeight, 18);
-    this.gameOverBox.lineStyle(3, 0x222222, 0.7);
+    this.gameOverBox.lineStyle(1, 0x222222, 0.4);
     this.gameOverBox.strokeRoundedRect(boxX, boxY, boxWidth, boxHeight, 18);
     this.gameOverBox.setDepth(1);
     // Game over text (smaller, HUD font)
     this.gameOverText = this.add.text(
       this.game.config.width / 2,
       this.game.config.height / 2,
-      'Game Over!\nPress SPACE or R to Restart',
-      { font: '24px "Iceland"', fill: '#c00', align: 'center' }
+      'GAME OVER!\nPress SPACE or R to Restart',
+      { font: '18px "Iceland"', fill: '#c00', align: 'center' }
     ).setOrigin(0.5).setDepth(2).setVisible(false);
     this.time.delayedCall(300, () => {
       if (this.gameOverText) {
