@@ -707,6 +707,7 @@ class MainScene extends Phaser.Scene {
     this.gameOverBox = null;
     this.level = 1;
     this.floor = 0;
+    this.currentFloor = 1; // Ensure currentFloor is reset on game restart
     this.score = 0; // Reset score
     this.levelText.setText('Level: 1');
     this.floorText.setText('Floor: 1 / ' + this.floorsPerLevel);
