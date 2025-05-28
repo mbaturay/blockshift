@@ -57,6 +57,7 @@ class MainScene extends Phaser.Scene {
     this.level = 1;
     this.floor = 0;
     this.floorsPerLevel = 6;
+    this.currentFloor = 1; // Track current floor (1-based)
     this.floorHeight = 100;
     this.levelBoost = 20;
     this.floorBoost = 5;
@@ -529,7 +530,12 @@ class MainScene extends Phaser.Scene {
     this.input.keyboard.resetKeys();
     // --- Floor bonus mechanic ---
     if (this.brokeBonusStreak === false && this.initialDirection !== null) {
-      this.score += this.swipeBonus;
+      // New scalable clean-run bonus logic
+      const baseBonus = 100;
+      const levelMultiplier = Math.pow(2, this.level - 1);
+      const floorBonus = (this.currentFloor - 1) * 10;
+      const totalBonus = baseBonus * levelMultiplier + floorBonus;
+      this.score += totalBonus;
       this.updateScoreText();
       // Flash score text and show bonus text near player
       this.tweens.add({
@@ -540,7 +546,8 @@ class MainScene extends Phaser.Scene {
         yoyo: true,
         ease: 'Power1',
       });
-      const bonusText = this.add.text(this.player.x, this.player.y - 40, '+100 Bonus!', { font: '22px Arial', fill: '#00b300', fontStyle: 'bold' })
+      const bonusText = this.add.text(this.player.x, this.player.y - 40, `+${totalBonus}`,
+        { font: '14px Arial', fill: '#00b300', fontStyle: 'bold' })
         .setOrigin(0.5);
       this.tweens.add({
         targets: bonusText,
@@ -562,6 +569,7 @@ class MainScene extends Phaser.Scene {
       this.updateScoreText();
       this.level++;
       this.floor = 0;
+      this.currentFloor = 1; // Reset to 1 for new level
       this.levelText.setText('Level: ' + this.level);
       this.floorText.setText('Floor: 1 / ' + this.floorsPerLevel);
       this.direction = 'right';
@@ -624,6 +632,7 @@ class MainScene extends Phaser.Scene {
         this.transitioning = false;
       });
       this.floor = nextFloor;
+      this.currentFloor = this.floor + 1; // 1-based for display and bonus
       this.floorText.setText('Floor: ' + (this.floor + 1) + ' / ' + this.floorsPerLevel);
       this.direction = newDir;
     }
